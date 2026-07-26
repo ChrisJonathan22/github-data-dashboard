@@ -1,38 +1,46 @@
 import React, { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { useDemoData } from '@mui/x-data-grid-generator';
+import Paper from '@mui/material/Paper';
 import { useQuery } from "@tanstack/react-query";
 import { fetchRepositories } from "../../features/repositories/api";
-
-
-const VISIBLE_FIELDS = ['name', 'rating', 'country', 'dateCreated', 'isAdmin'];
+import Searchbar from '../Searchbar/Searchbar';
 
 function RepositoryList() {
-     const [username, setUsername] = useState("");
+    const [username, setUsername] = useState("");
     const [sort, setSort] = useState("created");
     const [direction, setDirection] = useState("desc");
 
-    const { repositoryData, isLoading, isError } = useQuery({
+    const { data: repositoryData, isLoading, isSuccess, isPending, isFetching, isError } = useQuery({
         queryKey: ["repositories", username, sort],
         queryFn: () => fetchRepositories(username, sort, direction),
         enabled: Boolean(username),
     });
 
-    const { data, loading } = useDemoData({
-    dataSet: 'Employee',
-    visibleFields: VISIBLE_FIELDS,
-    rowLength: 100,
-  });
+
+    const tableColumns = [
+    { field: 'name', headerName: 'Name', width: 200 },
+    { field: 'private', headerName: 'isPrivate?', width: 100 },
+    { field: 'pushed_at', headerName: 'Pushed At', width: 130 },
+    ];
+
 
   return (
     <div>
         <h5>RepositoryList</h5>
-        <div style={{ height: 400, width: '100%' }}>
-            <DataGrid {...data} loading={loading} />
-        </div>
+        <Searchbar onSearch={setUsername} />
+        <Paper sx={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={repositoryData}
+        columns={tableColumns}
+        pageSizeOptions={[5, 10]}
+        sx={{ border: 0 }}
+      />
+    </Paper>
         <div>
             <h4>Repositories</h4>
-            { isLoading ? <p>The repositories are being fetched</p> : repositoryData, <p>The data has been successfully fetched...</p>, console.log(repositoryData) }
+            { isLoading && ( <p>The repositories are being fetched</p>, <img alt='Loading gif' src='https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGJsaTBmaWNhNWtlMGd5emVmZmR3bGJqcWZ3bmszeXlndjltajBzaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/17mNCcKU1mJlrbXodo/giphy.gif' /> )}
+
+            { isSuccess && ( <p>The data has been successfully fetched...</p> )}
         </div>
     </div>
   )

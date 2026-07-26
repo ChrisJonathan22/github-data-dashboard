@@ -15,7 +15,12 @@ const response = await fetch(
     throw new Error("Failed to fetch repositories");
   }
 
-  return response.json();
+  const data = await response.json();
+
+//   console.log("Data from api.js", data);
+  
+
+  return data;
 }
 
 
