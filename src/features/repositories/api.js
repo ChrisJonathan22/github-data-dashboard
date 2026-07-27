@@ -2,25 +2,19 @@
 
 
 export async function fetchRepositories (username, sort="updated", direction="desc", page = 1) {
+    const encodedUsername = encodeURIComponent(username);
 
-const encodedUsername = encodeURIComponent(username);
+    const response = await fetch(
+        `https://api.github.com/users/${encodedUsername}/repos?sort=${sort}&direction=${direction}&page=${page}`
+    );
 
-console.log("Username encoded: ", encodedUsername);
+    if (!response.ok) {
+        throw new Error("Failed to fetch repositories");
+    }
 
-const response = await fetch(
-    `https://api.github.com/users/${encodedUsername}/repos?sort=${sort}&direction=${direction}&page=${page}`
-  );
+    const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch repositories");
-  }
-
-  const data = await response.json();
-
-//   console.log("Data from api.js", data);
-  
-
-  return data;
+    return data;
 }
 
 

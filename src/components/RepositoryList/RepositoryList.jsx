@@ -4,6 +4,7 @@ import Paper from '@mui/material/Paper';
 import { useQuery } from "@tanstack/react-query";
 import { fetchRepositories } from "../../features/repositories/api";
 import Searchbar from '../Searchbar/Searchbar';
+import PaginationNav from '../Pagination/Pagination';
 
 function RepositoryList() {
     const [username, setUsername] = useState("");
@@ -26,22 +27,21 @@ function RepositoryList() {
 
   return (
     <div>
-        <h5>RepositoryList</h5>
-        <Searchbar onSearch={setUsername} />
-        <Paper sx={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={repositoryData}
-        columns={tableColumns}
-        pageSizeOptions={[5, 10]}
-        sx={{ border: 0 }}
-      />
-    </Paper>
+        <Searchbar onSearch={setUsername} onSort={setSort} />
         <div>
-            <h4>Repositories</h4>
             { isLoading && ( <p>The repositories are being fetched</p>, <img alt='Loading gif' src='https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGJsaTBmaWNhNWtlMGd5emVmZmR3bGJqcWZ3bmszeXlndjltajBzaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/17mNCcKU1mJlrbXodo/giphy.gif' /> )}
 
-            { isSuccess && ( <p>The data has been successfully fetched...</p> )}
+            { isSuccess && ( <p>The data has been successfully fetched...</p>,
+            <Paper sx={{ height: 400, width: '100%' }}>
+                <DataGrid
+                    rows={repositoryData}
+                    columns={tableColumns}
+                    pageSizeOptions={[5, 10]}
+                    sx={{ border: 0 }}
+                />
+            </Paper> )}
         </div>
+        <PaginationNav />
     </div>
   )
 }

@@ -1,31 +1,33 @@
 import React, { useState } from 'react';
-import Input from '@mui/material/Input';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-// import AccountCircle from '@mui/icons-material/AccountCircle';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import './Searchbar.css';
+import Sorting from '../Sorting/Sorting';
 
-function Searchbar( { onSearch } ) {
+function Searchbar( { onSearch, onSort } ) {
   const [ input, setInput ] = useState("");
 
-  function handleSubmit (e) {
+  // When a user interact with the search field, capture the input and update the input state
+  function handleSearchInput (event) {
+    setInput(event.target.value);
+  }
 
-    // Is the search submitted? capture the data, setInput and send it via onSearch
-
-    setInput(e.target.value);
-
-    console.log("Searchbar input: ", input);
-    
-
+  // When the search  button is clicked send the data to the Repository List via onSearch
+  function handleSubmit () {
     onSearch(input);
   }
+
   return (
-    <div>
-      <h5>Searchbar</h5>
-
-      <TextField id="outlined-basic" label="Search for account..." variant="outlined" onSubmit={(e) => handleSubmit(e)} />
-
-    </div>
+    <>
+      <div className="searchbarContainer">
+        <Stack direction={{ xs: "column", sm: "row"}} spacing={2} sx={{ justifyContent: "space-between" }}>
+          <TextField id="outlined-basic" label="Enter a username..." variant="outlined" onChange={(event) => handleSearchInput(event)} />
+          <Button variant="outlined" onClick={ handleSubmit }>Search</Button>
+          <Sorting onSort={onSort} />
+        </Stack>
+      </div>
+    </>
   )
 }
 
