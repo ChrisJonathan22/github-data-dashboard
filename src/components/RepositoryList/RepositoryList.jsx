@@ -20,8 +20,8 @@ function RepositoryList() {
 
     const tableColumns = [
     { field: 'name', headerName: 'Name', width: 200 },
-    { field: 'private', headerName: 'isPrivate?', width: 100 },
-    { field: 'pushed_at', headerName: 'Pushed At', width: 130 },
+    { field: 'private', headerName: 'isPrivate?', width: 200 },
+    { field: 'pushed_at', headerName: 'Pushed At', width: 230 },
     ];
 
 
