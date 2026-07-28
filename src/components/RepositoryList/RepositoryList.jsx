@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchRepositories } from "../../features/repositories/api";
 import Searchbar from '../Searchbar/Searchbar';
 import PaginationNav from '../Pagination/Pagination';
+import "./RepositoryList.css";
 
 function RepositoryList() {
     const [username, setUsername] = useState("");
@@ -31,9 +32,9 @@ return (
     <div>
         <Searchbar onSearch={setUsername} onSort={setSort} />
         <div>
-            { isLoading && ( <p>The repositories are being fetched</p>, <img alt='Loading gif' src='https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGJsaTBmaWNhNWtlMGd5emVmZmR3bGJqcWZ3bmszeXlndjltajBzaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/17mNCcKU1mJlrbXodo/giphy.gif' /> )}
+            { isLoading && (<img alt='Loading gif' src='https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGJsaTBmaWNhNWtlMGd5emVmZmR3bGJqcWZ3bmszeXlndjltajBzaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/17mNCcKU1mJlrbXodo/giphy.gif' /> )}
 
-            { isSuccess && ( <p>The data has been successfully fetched...</p>,
+            { isSuccess && (
             <Paper sx={{ height: 400, width: '100%' }}>
                 <DataGrid
                     rows={repositoryResponse.data}
@@ -43,7 +44,9 @@ return (
                 />
             </Paper> )}
         </div>
-        <PaginationNav hasNextPage = { repositoryResponse?.hasNextPage } page={ page } setPage={ setPage } totalRepos = {repositoryResponse?.totalRepo} />
+        <div className="paginationContainer">
+            <PaginationNav hasNextPage = { repositoryResponse?.hasNextPage } page={ page } setPage={ setPage } totalRepos = {repositoryResponse?.totalRepo} />
+        </div>
     </div>
 )
 }

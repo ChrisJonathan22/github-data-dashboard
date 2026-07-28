@@ -30,15 +30,15 @@ export async function fetchRepositories (username, sort="updated", page = 1, dir
         throw new Error("Failed to fetch total repositories");
     }
 
-    const totalRepo = await totalRepoResponse.json().public_repos;
+    const totalRepo = await totalRepoResponse.json();
     
-    console.log("Total repos from api.js: ", totalRepo);
+    console.log("Total repos from api.js: ", totalRepo.public_repos);
     
 
     return {
         data,
         hasNextPage: linkHeader?.includes('rel="next"') ?? false,
-        totalRepo: totalRepo
+        totalRepo: totalRepo.public_repos
     };
 }
 
