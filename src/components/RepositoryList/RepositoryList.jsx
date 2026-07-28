@@ -9,11 +9,11 @@ import PaginationNav from '../Pagination/Pagination';
 function RepositoryList() {
     const [username, setUsername] = useState("");
     const [sort, setSort] = useState("created");
-    const [direction, setDirection] = useState("desc");
+    const [ page, setPage ] = useState(1);
 
-    const { data: repositoryData, isLoading, isSuccess, isPending, isFetching, isError } = useQuery({
-        queryKey: ["repositories", username, sort],
-        queryFn: () => fetchRepositories(username, sort, direction),
+    const { data: repositoryResponse, isLoading, isSuccess } = useQuery({
+        queryKey: ["repositories", username, sort, page],
+        queryFn: () => fetchRepositories(username, sort, page),
         enabled: Boolean(username),
     });
 
@@ -24,8 +24,10 @@ function RepositoryList() {
     { field: 'pushed_at', headerName: 'Pushed At', width: 230 },
     ];
 
+    console.log("Total repos from repos list: ", repositoryResponse?.totalRepo);
+    
 
-  return (
+return (
     <div>
         <Searchbar onSearch={setUsername} onSort={setSort} />
         <div>
@@ -34,16 +36,16 @@ function RepositoryList() {
             { isSuccess && ( <p>The data has been successfully fetched...</p>,
             <Paper sx={{ height: 400, width: '100%' }}>
                 <DataGrid
-                    rows={repositoryData}
+                    rows={repositoryResponse.data}
                     columns={tableColumns}
                     pageSizeOptions={[5, 10]}
                     sx={{ border: 0 }}
                 />
             </Paper> )}
         </div>
-        <PaginationNav />
+        <PaginationNav hasNextPage = { repositoryResponse?.hasNextPage } page={ page } setPage={ setPage } totalRepos = {repositoryResponse?.totalRepo} />
     </div>
-  )
+)
 }
 
 export default RepositoryList
