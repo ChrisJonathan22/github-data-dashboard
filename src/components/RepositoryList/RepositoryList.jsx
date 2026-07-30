@@ -18,19 +18,15 @@ function RepositoryList() {
         enabled: Boolean(username),
     });
 
-
     const tableColumns = [
     { field: 'name', headerName: 'Name', width: 200 },
     { field: 'private', headerName: 'isPrivate?', width: 200 },
     { field: 'pushed_at', headerName: 'Pushed At', width: 230 },
     ];
 
-    console.log("Total repos from repos list: ", repositoryResponse?.totalRepo);
-    
-
 return (
     <div>
-        <Searchbar onSearch={setUsername} onSort={setSort} />
+        <Searchbar onSearch={setUsername} setPage={setPage} onSort={setSort} />
         <div>
             { isLoading && (<img alt='Loading gif' src='https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGJsaTBmaWNhNWtlMGd5emVmZmR3bGJqcWZ3bmszeXlndjltajBzaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/17mNCcKU1mJlrbXodo/giphy.gif' /> )}
 

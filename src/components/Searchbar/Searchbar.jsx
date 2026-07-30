@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import './Searchbar.css';
 import Sorting from '../Sorting/Sorting';
 
-function Searchbar( { onSearch, onSort } ) {
+function Searchbar( { onSearch, onSort, setPage } ) {
   const [ input, setInput ] = useState("");
 
   // When a user interact with the search field, capture the input and update the input state
@@ -16,6 +16,8 @@ function Searchbar( { onSearch, onSort } ) {
   // When the search  button is clicked send the data to the Repository List via onSearch
   function handleSubmit () {
     onSearch(input);
+    // Reset page to 1 for new searches
+    setPage(1);
   }
 
   return (
